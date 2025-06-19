@@ -1,6 +1,7 @@
 // review_submission_service.dart
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:developerlook_task_app/Screens & Features/Share Screen/Bloc/share_review_state.dart';
 
@@ -18,6 +19,7 @@ class ReviewSubmissionService {
   static Future<void> uploadReview(ShareReviewState state) async {
     final FirebaseStorage storage = FirebaseStorage.instance;
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
     final List<File> images = state.pickedImages;
     final List<String> imageUrls = [];
 
@@ -38,6 +40,9 @@ class ReviewSubmissionService {
       'selectedDate': state.selectedDate?.toIso8601String(),
       'timestamp': Timestamp.now(),
       'imageUrls': imageUrls,
+      'userId': FirebaseAuth.instance.currentUser?.uid,
+      'userName': FirebaseAuth.instance.currentUser?.displayName ?? 'Anonymous',
+      'userPhotoUrl': FirebaseAuth.instance.currentUser?.photoURL ?? '',
     });
   }
 }
