@@ -44,62 +44,65 @@ class CommentsWidget extends StatelessWidget {
               upVoteCount = upvoteSnapshot.data!.docs.length;
             }
 
-            return Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(comment['userPhotoUrl']),
-                        radius: 14,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(comment['userName'],
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 13)),
-                            Text(PostDateFormatter().formatPostDate(Timestamp.fromMillisecondsSinceEpoch(
-                                comment['createdAt'].millisecondsSinceEpoch).toDate()),
-                                style: const TextStyle(fontSize: 11)),
-                          ],
-                        ),
-                      ),
-                      Text('$upVoteCount Upvote',
-                          style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500
-                          )
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(comment['text'], style: const TextStyle(fontSize: 13)),
-                  Row(
-                    children: [
-                      _upvoteAComment(isUpVoted, index),
-                      SizedBox(width: 25),
-                      Expanded(child: _replyAComment(comments[index].id))
-                    ],
-                  ),
-
-                  const SizedBox(height: 8),
-                  _repliesContainer(postId, comments[index].id),
-                ],
-              ),
-            );
-
+            return _commentCard(comment, upVoteCount, isUpVoted, index);
           },
         );
       },
+    );
+  }
+  
+  Widget _commentCard(Map<String, dynamic> comment, num upVoteCount, bool isUpVoted, int index) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(comment['userPhotoUrl']),
+                radius: 14,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(comment['userName'],
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 13)),
+                    Text(PostDateFormatter().formatPostDate(Timestamp.fromMillisecondsSinceEpoch(
+                        comment['createdAt'].millisecondsSinceEpoch).toDate()),
+                        style: const TextStyle(fontSize: 11)),
+                  ],
+                ),
+              ),
+              Text('$upVoteCount Upvote',
+                  style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500
+                  )
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(comment['text'], style: const TextStyle(fontSize: 13)),
+          Row(
+            children: [
+              _upvoteAComment(isUpVoted, index),
+              SizedBox(width: 25),
+              Expanded(child: _replyAComment(comments[index].id))
+            ],
+          ),
+
+          const SizedBox(height: 8),
+          _repliesContainer(postId, comments[index].id),
+        ],
+      ),
     );
   }
 

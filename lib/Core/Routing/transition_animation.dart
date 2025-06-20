@@ -1,4 +1,3 @@
-// Flutter imports:
 import 'package:flutter/material.dart';
 
 Widget customTransitionBuilder(BuildContext context, Animation<double> animation,

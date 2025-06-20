@@ -35,29 +35,18 @@ class _CommentInputWidgetState extends State<CommentInputWidget> {
 
     return Row(
       children: [
+        // Display user's profile picture or a placeholder if not available
         CircleAvatar(
           backgroundImage: NetworkImage(
               user?.photoURL ?? 'https://via.placeholder.com/150'),
           radius: 18,
         ),
+
+        // TextField for comment input
         const SizedBox(width: 8),
-        Expanded(
-          child: TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              hintText: 'Write Your Comment',
-              hintStyle: const TextStyle(fontSize: 13),
-              contentPadding:
-              const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              filled: true,
-              fillColor: Colors.grey[100],
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(24),
-                borderSide: BorderSide.none,
-              ),
-            ),
-          ),
-        ),
+        _commentInputTextBox(),
+
+        // Send button
         const SizedBox(width: 8),
         GestureDetector(
           onTap: _isSending ? null : _sendComment,
@@ -71,6 +60,26 @@ class _CommentInputWidgetState extends State<CommentInputWidget> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _commentInputTextBox() {
+    return Expanded(
+      child: TextField(
+        controller: _controller,
+        decoration: InputDecoration(
+          hintText: 'Write Your Comment',
+          hintStyle: const TextStyle(fontSize: 13),
+          contentPadding:
+          const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          filled: true,
+          fillColor: Colors.grey[100],
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(24),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
     );
   }
 }

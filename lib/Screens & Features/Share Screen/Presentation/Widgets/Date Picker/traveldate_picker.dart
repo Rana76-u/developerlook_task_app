@@ -25,7 +25,7 @@ class TravelDatePicker extends StatelessWidget {
         }
       },
       child: Container(
-        width: 140,
+        width: 145,
         padding: const EdgeInsets.only(left: 15, right: 3, top: 3, bottom: 3),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
@@ -38,6 +38,7 @@ class TravelDatePicker extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            // Picked Date Text
             Text(
               state.selectedDate == null
                   ? "Travel Date"
@@ -49,6 +50,8 @@ class TravelDatePicker extends StatelessWidget {
               ),
             ),
             SizedBox(width: 10),
+
+            // Calendar Icon
             Container(
               height: 40,
               width: 40,

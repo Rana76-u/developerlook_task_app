@@ -30,24 +30,38 @@ class ShareScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    //Page Title
                     const Text(
                       'Share',
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
+
+                    // Image Uploader
                     const SizedBox(height: 20),
                     ShareImageUploader(state: state,),
+
+                    //Dropdowns for Departure
                     const SizedBox(height: 30),
                     ShareDropdownWidget(state: state, dropdownType: 'departure'),
+
+                    //Dropdowns for Arrival
                     const SizedBox(height: 15),
                     ShareDropdownWidget(state: state, dropdownType: 'arrival'),
+
+                    //Dropdowns for Airline
                     const SizedBox(height: 15),
                     ShareDropdownWidget(state: state, dropdownType: 'airline'),
+
+                    //Dropdowns for Class
                     const SizedBox(height: 15),
                     ShareDropdownWidget(state: state, dropdownType: 'class'),
+
+                    //Message Textbox
                     const SizedBox(height: 15),
                     MessageTextbox(),
+
+                    //Rating & Date Picker
                     const SizedBox(height: 15),
-                    //rating & date picker
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -59,6 +73,7 @@ class ShareScreen extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
+                    //Submit Button
                     SubmitButton()
                   ],
                 ),

@@ -45,6 +45,7 @@ class ShareSubmissionHandler {
       navigator.pop();
     } catch (e) {
       if (context.mounted) {
+        print('Failed to submit: $e');
         SnackbarUtils.showErrorSnackbar(context, 'Failed to submit: $e');
       }
     }

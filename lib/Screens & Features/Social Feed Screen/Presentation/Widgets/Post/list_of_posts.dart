@@ -9,11 +9,11 @@ class ListOfPosts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: FirebaseFirestore.instance
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
             .collection('reviews')
             .orderBy('timestamp', descending: true)
-            .get(),
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: LinearProgressIndicator(

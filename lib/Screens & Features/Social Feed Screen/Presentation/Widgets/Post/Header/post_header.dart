@@ -11,11 +11,14 @@ class PostHeader extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Display the author's avatar
         CircleAvatar(
           backgroundImage: NetworkImage(post.authorAvatarUrl),
           radius: 20,
         ),
         const SizedBox(width: 10),
+
+        // Display the author's name and post date
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,6 +30,8 @@ class PostHeader extends StatelessWidget {
             ],
           ),
         ),
+
+        // Display the post rating as stars
         Row(
           children: [
             Row(

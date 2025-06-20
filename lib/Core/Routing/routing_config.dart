@@ -30,19 +30,6 @@ final GoRouter router = GoRouter(
           transitionsBuilder: customTransitionBuilder,
         );
       },
-      routes: <RouteBase>[
-        ///todo: uncomment/remove here
-        /*GoRoute(
-          path: 'product/:productId',
-          builder: (BuildContext context, GoRouterState state) {
-            final blocProvider = BlocProvider.of<ProductBloc>(context);
-            final productId = state.pathParameters['productId'] ?? "";
-            blocProvider.add(UpdateProductID(state.pathParameters['productId'] ?? ""));
-
-            return ProductScreen(productId: productId);
-          },
-        ),*/
-      ],
     ),
 
     // login page
@@ -69,97 +56,5 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    //profile
-    GoRoute(
-      path: '/sharescreen',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const ShareScreen(),
-          transitionsBuilder: customTransitionBuilder,
-        );
-      },
-    ),
-
-    ///todo: uncomment/remove here
-    //search
-    /*GoRoute(
-      path: '/search',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const SearchPage(),
-          transitionsBuilder: customTransitionBuilder,
-        );
-      },
-      routes: <RouteBase>[
-        GoRoute(
-          path: 'item/:searchItem',
-          builder: (BuildContext context, GoRouterState state) {
-            BlocProvider.of<SearchBloc>(context).add(UpdateSearchedText(state.pathParameters['searchItem'] ?? ""));
-            return const SearchPage();
-          },
-        ),
-      ],
-    ),*/
   ],
 );
-
-/*ShellRoute(
-      builder: (BuildContext context, GoRouterState state, Widget child) {
-        return Scaffold(
-          body: child,
-          bottomNavigationBar: BottomBar(),
-        );
-      },
-      routes: [
-        //home
-        GoRoute(
-          path: '/',
-          pageBuilder: (context, state) {
-            return CustomTransitionPage(
-              key: state.pageKey,
-              child: const HomePage(),
-              transitionsBuilder: customTransitionBuilder,
-            );
-          },
-          routes: <RouteBase>[
-            GoRoute(
-              path: 'product/:productId',
-              builder: (BuildContext context, GoRouterState state) {
-                final blocProvider = BlocProvider.of<ProductBloc>(context);
-                final productId = state.pathParameters['productId'] ?? "";
-                blocProvider.add(UpdateProductID(state.pathParameters['productId'] ?? ""));
-
-                return BlocProvider(
-                    create: (context) => ProductBloc()..add(UpdateProductID(productId)),
-                    child: ProductScreen(productId: productId));
-              },
-            ),
-          ],
-        ),
-
-        //cart
-        GoRoute(
-          path: '/cart',
-          pageBuilder: (context, state) {
-            return CustomTransitionPage(
-              key: state.pageKey,
-              child: const Cart(),
-              transitionsBuilder: customTransitionBuilder,
-            );
-          },
-        ),
-
-        GoRoute(
-          path: '/profile',
-          pageBuilder: (context, state) {
-            return CustomTransitionPage(
-              key: state.pageKey,
-              child: const Profile(),
-              transitionsBuilder: customTransitionBuilder,
-            );
-          },
-        ),
-      ],
-    )*/

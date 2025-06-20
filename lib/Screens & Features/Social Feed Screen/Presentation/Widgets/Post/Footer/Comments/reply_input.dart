@@ -48,12 +48,15 @@ class _ReplyInputWidgetState extends State<ReplyInputWidget> {
       ),
       child: Row(
         children: [
+          // User avatar
           CircleAvatar(
             backgroundImage: NetworkImage(
                 user?.photoURL ?? 'https://via.placeholder.com/150'),
             radius: 18,
           ),
           const SizedBox(width: 8),
+
+          // Reply input field
           Expanded(
             child: TextField(
               controller: _controller,
@@ -71,6 +74,8 @@ class _ReplyInputWidgetState extends State<ReplyInputWidget> {
               ),
             ),
           ),
+
+          // Send button
           const SizedBox(width: 8),
           GestureDetector(
             onTap: _isSending ? null : _sendComment,

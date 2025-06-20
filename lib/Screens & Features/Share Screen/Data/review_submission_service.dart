@@ -1,11 +1,12 @@
-// review_submission_service.dart
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:developerlook_task_app/Screens & Features/Share Screen/Bloc/share_review_state.dart';
+import 'package:uuid/uuid.dart';
 
 class ReviewSubmissionService {
+
   static bool hasMissingRequiredFields(ShareReviewState state) {
     return state.pickedImages.isEmpty ||
         state.message.trim().isEmpty ||
@@ -24,7 +25,8 @@ class ReviewSubmissionService {
     final List<String> imageUrls = [];
 
     for (int i = 0; i < images.length; i++) {
-      final fileName = 'review_images/${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
+      final fileName = 'review_images/${const Uuid().v4()}_$i.jpg';
+      //final fileName = 'review_images/${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
       final snapshot = await storage.ref(fileName).putFile(images[i]);
       final downloadUrl = await snapshot.ref.getDownloadURL();
       imageUrls.add(downloadUrl);

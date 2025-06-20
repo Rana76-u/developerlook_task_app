@@ -9,7 +9,6 @@ class PostImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final List urls = post.imageUrls.where((url) => url.isNotEmpty).toList();
     final List<String> urls = post.imageUrls.where((url) => url.isNotEmpty).toList().cast<String>();
 
     if (urls.isEmpty) {
@@ -27,10 +26,5 @@ class PostImages extends StatelessWidget {
       width: double.infinity,
       backgroundColor: Colors.primaries[urls.length % Colors.primaries.length].withValues(alpha: 0.3),
     );
-
-    /*return CustomImageLayout(
-      imageUrls: urls,
-      imageHeight: 200,
-    );*/
   }
 }

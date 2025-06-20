@@ -18,28 +18,22 @@ class MultiImageViewer extends StatelessWidget {
     this.networkImageHeaders,
   });
 
-  /// Headers for network image
   final Map<String, String>? networkImageHeaders;
 
-  /// Color of the background image.
   final Color backgroundColor;
 
-  ///Color for the textStyle
   final TextStyle textStyle;
 
-  /// ```List<ImageModel>``` of images and captions to display.
-  ///
-  /// Each image is displayed with respect to its corresponding caption.
-  ///
-  /// Images are compulsory while captions are optional.
+  // List<ImageModel> of images and captions to display.
+  // Each image is displayed with respect to its corresponding caption.
+  // captions are optional.
   final List<ImageModel> images;
 
-  /// Height of the image(s).
-  ///
-  /// If not set, it will be a height of 205.0.
+  // Height of the image.
+  // defaults 205.
   final double height;
 
-  /// Width of the image(s).
+  // Width of the images.
   final double? width;
 
   CachedNetworkImageProvider _createNetworkImage(String path) =>
@@ -47,7 +41,6 @@ class MultiImageViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// MediaQuery Width
     double defaultWidth = MediaQuery.sizeOf(context).width;
     final imagesList = images.map((image) => image.imageUrl).toList();
     final captionList = images

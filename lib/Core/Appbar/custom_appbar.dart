@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../Screens & Features/Authentication/Data/auth_services.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -57,24 +58,48 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
         // Profile Avatar
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.black, width: 2),
-            ),
-            child: CachedNetworkImage(
+        GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Sign Out'),
+                content: Text('Do you want to sign out?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      AuthService.instance.signOut();
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Sign Out'),
+                  ),
+                ],
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.black, width: 2),
+              ),
+              child: CachedNetworkImage(
                 width: 30,
                 imageUrl: FirebaseAuth.instance.currentUser!.photoURL ?? '',
                 imageBuilder: (context, imageProvider) => CircleAvatar(
-                      radius: 20,
-                      backgroundImage: imageProvider,
-                    ),
+                  radius: 20,
+                  backgroundImage: imageProvider,
+                ),
+              ),
             ),
           ),
         ),
-        // Hamburger Menu Icon
+        // Menu Icon
         IconButton(
           icon: Icon(Icons.menu, color: Colors.black),
           onPressed: () {},

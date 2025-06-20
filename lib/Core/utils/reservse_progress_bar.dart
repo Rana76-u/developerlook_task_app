@@ -23,7 +23,7 @@ class _ReverseProgressBarState extends State<ReverseProgressBar>
 
     _progressAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(_controller)
       ..addListener(() {
-        setState(() {}); // Triggers rebuild to update the progress
+        setState(() {});
       });
 
     _controller.forward(); // Start the animation
@@ -31,7 +31,7 @@ class _ReverseProgressBarState extends State<ReverseProgressBar>
 
   @override
   void dispose() {
-    _controller.dispose(); // Clean up the controller
+    _controller.dispose();
     super.dispose();
   }
 

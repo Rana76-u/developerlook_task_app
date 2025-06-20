@@ -5,6 +5,7 @@ import 'package:developerlook_task_app/Screens%20&%20Features/Social%20Feed%20Sc
 import 'package:developerlook_task_app/Screens%20&%20Features/Social%20Feed%20Screen/Presentation/Widgets/Post/Footer/share_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class PostFooter extends StatelessWidget {
   final String postId;
@@ -13,7 +14,7 @@ class PostFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<DocumentSnapshot>(
+    return StreamBuilder<DocumentSnapshot>( // Listening to the post document
       stream: FirebaseFirestore.instance.collection('reviews').doc(postId).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -25,10 +26,10 @@ class PostFooter extends StatelessWidget {
         final likesCollection = postData.reference.collection('Likes');
         final commentsCollection = postData.reference.collection('Comments');
 
-        return StreamBuilder<QuerySnapshot>(
+        return StreamBuilder<QuerySnapshot>( // Listening to the comments collection
           stream: commentsCollection.snapshots(),
           builder: (context, commentSnap) {
-            return StreamBuilder<QuerySnapshot>(
+            return StreamBuilder<QuerySnapshot>( // Listening to the likes collection
               stream: likesCollection.snapshots(),
               builder: (context, likeSnap) {
                 final likesCount = likeSnap.hasData ? likeSnap.data!.docs.length : 0;
@@ -38,8 +39,12 @@ class PostFooter extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 8),
+
+                    // Displaying the number of likes and comments
                     Text('$likesCount Likes  •  ${comments.length} Comments'),
                     const SizedBox(height: 15),
+
+                    // Like & Share Buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -53,7 +58,7 @@ class PostFooter extends StatelessWidget {
                                 final isLiked = likeSnapshot.hasData && likeSnapshot.data!.exists;
                                 return Row(
                                   children: [
-                                    Icon(isLiked ? Icons.thumb_up_alt : Icons.thumb_up_outlined,),
+                                    Icon(isLiked ? FontAwesome.thumbs_up_solid : FontAwesome.thumbs_up,),
                                     SizedBox(width: 8),
                                     Text('Like', style: TextStyle(fontSize: 14)),
                                   ],
@@ -65,14 +70,20 @@ class PostFooter extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 15),
+
+                    // Comments Section
                     if (comments.isNotEmpty) CommentsWidget(postId: postId,comments: List<QueryDocumentSnapshot<Object?>>.from(comments)),
                     const SizedBox(height: 10),
+
+                    // See More Comments
                     Text('See More Comments',
                         style: TextStyle(
                             fontSize: 14,
                             color: Colors.blueGrey,
                             fontWeight: FontWeight.bold)),
                     const SizedBox(height: 10),
+
+                    // Comment Input Widget
                     CommentInputWidget(postId: postId),
                   ],
                 );

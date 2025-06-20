@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../../../Data/post_model.dart';
 
 class PostTags extends StatelessWidget {
@@ -12,7 +13,7 @@ class PostTags extends StatelessWidget {
       post.arrivalAirport,
       post.airline,
       post.travelClass,
-      post.travelDate
+      DateFormat('MMM yyyy').format(DateTime.parse(post.travelDate))
     ];
 
     return Wrap(

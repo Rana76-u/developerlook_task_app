@@ -2,7 +2,6 @@ import 'package:developerlook_task_app/Core/Routing/routing_config.dart';
 import 'package:developerlook_task_app/Core/app_export.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'Screens & Features/Share Screen/Bloc/share_review_bloc.dart';
 import 'firebase_options.dart';
 
@@ -12,12 +11,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  Future.wait([
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-  ]).then((value) {
-    PrefUtils().init();
-    runApp(MyApp());
-  });
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -25,26 +19,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Sizer(
-      builder: (context, orientation, deviceType) {
-        SizeUtils.deviceType = deviceType;
-        SizeUtils.orientation = orientation;
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider<ShareReviewBloc>(
-              create: (context) => ShareReviewBloc(),
-            ),
-          ],
-          child: MaterialApp.router(
-            title: 'Developer Look',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
-            routerConfig: router,
-          ),
-        );
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ShareReviewBloc>(
+          create: (context) => ShareReviewBloc(),
+        ),
+      ],
+      child: MaterialApp.router(
+        title: 'Developer Look',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Plus Jakarta Sans',
+          primarySwatch: Colors.blue,
+        ),
+        routerConfig: router,
+      ),
     );
   }
 }

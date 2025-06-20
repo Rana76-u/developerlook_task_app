@@ -89,7 +89,7 @@ class _ShareButtonState extends State<ShareButton> {
         onTap: toggleShareOptions,
         child: Row(
           children: const [
-            Icon(Icons.share_outlined),
+            Icon(BoxIcons.bx_share),
             SizedBox(width: 8),
             Text('Share', style: TextStyle(fontSize: 14)),
           ],

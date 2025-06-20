@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:developerlook_task_app/Screens%20&%20Features/Share%20Screen/Data/dropdown_services.dart';
 import 'package:developerlook_task_app/Screens%20&%20Features/Share%20Screen/Data/selected_item_value_determainer.dart';
 import 'package:developerlook_task_app/Screens%20&%20Features/Share%20Screen/Data/util.dart';
 import 'package:developerlook_task_app/Screens%20&%20Features/Share%20Screen/Bloc/share_review_bloc.dart';
@@ -36,52 +36,21 @@ class ShareDropdownWidgetState extends State<ShareDropdownWidget> {
 
   Future<void> _loadData() async {
     final bloc = context.read<ShareReviewBloc>();
-    QuerySnapshot snapshot;
     String input = _controller.text.trim();
-    String upperInput = input.toUpperCase();
-    String lowerInput = input.toLowerCase();
     List<Map<String, dynamic>> items = [];
 
     if (widget.dropdownType == 'departure' || widget.dropdownType == 'arrival') {
-      snapshot = await FirebaseFirestore.instance.collection('airports').where(
-        Filter.or(
-          Filter('code', isGreaterThanOrEqualTo: upperInput),
-          Filter('code', isLessThan: '$lowerInput\uf8ff'),
-          Filter('airport', isGreaterThanOrEqualTo: upperInput),
-          Filter('airport', isLessThan: '$lowerInput\uf8ff'),
-          Filter('city', isGreaterThanOrEqualTo: upperInput),
-          Filter('city', isLessThan: '$lowerInput\uf8ff'),
-        ),
-      ).get();
 
-      items = snapshot.docs.map((doc) => {
-        'city': doc['city'],
-        'airport': doc['airport'],
-        'code': doc['code'],
-      }).toList();
+      items = await DropDownServices().getAirportList(input);
 
-    } else if (widget.dropdownType == 'airline') {
-      snapshot = await FirebaseFirestore.instance.collection('airlines').where(
-        Filter.or(
-          Filter('name', isGreaterThanOrEqualTo: upperInput),
-          Filter('name', isLessThan: '$lowerInput\uf8ff'),
-          Filter('country', isGreaterThanOrEqualTo: upperInput),
-          Filter('country', isLessThan: '$lowerInput\uf8ff'),
-          Filter('code', isGreaterThanOrEqualTo: upperInput),
-          Filter('code', isLessThan: '$lowerInput\uf8ff'),
-        ),
-      ).get();
+    }
+    else if (widget.dropdownType == 'airline') {
+      items = await DropDownServices().getAirLineList(input);
 
-      items = snapshot.docs.map((doc) => {
-        'name': doc['name'],
-        'country': doc['country'],
-        'code': doc['code'],
-      }).toList();
+    }
+    else if (widget.dropdownType == 'class') {
 
-    } else if (widget.dropdownType == 'class') {
-      DocumentSnapshot doc = await FirebaseFirestore.instance.collection('class').doc('set1').get();
-      final List<dynamic> classList = doc['classes'];
-      items = classList.map((c) => {'name': c.toString()}).toList();
+      items = await DropDownServices().getClassList(input);
     }
 
     bloc.add(UpdateDropdownItemsList(dropdownType: widget.dropdownType, items: items));
@@ -101,52 +70,7 @@ class ShareDropdownWidgetState extends State<ShareDropdownWidget> {
           link: _layerLink,
           showWhenUnlinked: false,
           offset: const Offset(0, 60),
-          child: Material(
-            elevation: 2,
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 200),
-              child: FutureBuilder(
-                future: _loadData(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: \${snapshot.error}'));
-                  } else if (filteredItems.isEmpty) {
-                    return const Center(child: Text('No results found'));
-                  }
-
-                  return ListView(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    children: filteredItems.map((item) {
-                      return ListTile(
-                        dense: true,
-                        visualDensity: const VisualDensity(vertical: -4),
-                        title: Text(
-                          SelectedItemValueDeterminer().getTitle(widget.dropdownType, item),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: ShareScreenUtil().isListTileView(widget.dropdownType)
-                            ? Text(SelectedItemValueDeterminer().getSubtitle(widget.dropdownType, item))
-                            : null,
-                        trailing: ShareScreenUtil().isListTileView(widget.dropdownType)
-                            ? Text(SelectedItemValueDeterminer().getTrailing(widget.dropdownType, item))
-                            : null,
-                        onTap: () {
-                          context.read<ShareReviewBloc>().add(UpdateDropdownSelectedItem(dropdownType: widget.dropdownType, selectedItem: item));
-                          _removeOverlay();
-                          _focusNode.unfocus();
-                        },
-                      );
-                    }).toList(),
-                  );
-                },
-              ),
-            ),
-          ),
+          child: _overlayDropDownUI(),
         ),
       ),
     );
@@ -172,6 +96,55 @@ class ShareDropdownWidgetState extends State<ShareDropdownWidget> {
     return selectedItem != null && selectedItem.isNotEmpty
         ? _buildSelectedItem(selectedItem)
         : _buildSearchField();
+  }
+
+  Widget _overlayDropDownUI() {
+    return Material(
+      elevation: 2,
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(8),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 200),
+        child: FutureBuilder(
+          future: _loadData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: \${snapshot.error}'));
+            } else if (filteredItems.isEmpty) {
+              return const Center(child: Text('No results found'));
+            }
+
+            return ListView(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              children: filteredItems.map((item) {
+                return ListTile(
+                  dense: true,
+                  visualDensity: const VisualDensity(vertical: -4),
+                  title: Text(
+                    SelectedItemValueDeterminer().getTitle(widget.dropdownType, item),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: ShareScreenUtil().isListTileView(widget.dropdownType)
+                      ? Text(SelectedItemValueDeterminer().getSubtitle(widget.dropdownType, item))
+                      : null,
+                  trailing: ShareScreenUtil().isListTileView(widget.dropdownType)
+                      ? Text(SelectedItemValueDeterminer().getTrailing(widget.dropdownType, item))
+                      : null,
+                  onTap: () {
+                    context.read<ShareReviewBloc>().add(UpdateDropdownSelectedItem(dropdownType: widget.dropdownType, selectedItem: item));
+                    _removeOverlay();
+                    _focusNode.unfocus();
+                  },
+                );
+              }).toList(),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   Widget _buildSearchField() {
