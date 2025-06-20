@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:developerlook_task_app/Screens%20&%20Features/Social%20Feed%20Screen/Presentation/Widgets/post_card.dart';
+import 'package:developerlook_task_app/Screens%20&%20Features/Social%20Feed%20Screen/Presentation/Widgets/Post/post_card.dart';
 import 'package:flutter/material.dart';
 
-import '../../Data/post_model.dart';
+import '../../../Data/post_model.dart';
 
 class ListOfPosts extends StatelessWidget {
   const ListOfPosts({super.key});
